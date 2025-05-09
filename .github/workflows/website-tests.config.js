@@ -1,12 +1,12 @@
 module.exports = {
-  url: 'https://yourwebsite.com',
+  url: 'https://www.gzhaoyin.com',
   fontRules: {
-    primaryFont: 'Arial, sans-serif',
+    primaryFont: 'Montserrat, Montserrat_Bold',
     headingSizes: {
       h1: '2em',
       h2: '1.5em'
     },
     bodySize: '16px'
   },
-  pagesToTest: ['/', '/about', '/contact']
+  pagesToTest: ['/', '/contact-us', '/products', '/news', '/video', '/about-us', '/privacy']
 };
