@@ -1,0 +1,20 @@
+name: Website Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+    - run: npm install puppeteer
+    - run: node run-tests.js
+    - name: Upload results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: test-results.json
