@@ -12,7 +12,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm install puppeteer
-    - run: node run-tests.js
+    - run: node workflows/run-tests.js
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
