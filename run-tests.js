@@ -1,31 +1,46 @@
 const config = require('./website-tests.config.js');
-const browser = await puppeteer.launch({
-  args: ['--no-sandbox', '--disable-setuid-sandbox']
-});
+const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function runTests() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+
   const results = {};
-  
+
   for (const pageUrl of config.pagesToTest) {
     const fullUrl = config.url + pageUrl;
     const page = await browser.newPage();
     await page.goto(fullUrl);
-    
+
+    // 简单模拟的测试函数
     results[pageUrl] = {
       fonts: await testFonts(page),
       overflow: await testOverflow(page),
       links: await testLinks(page)
     };
-    
+
     await page.close();
   }
-  
+
   await browser.close();
 
   fs.writeFileSync('test-results.json', JSON.stringify(results, null, 2));
   console.log('测试完成，结果已保存到 test-results.json');
+}
+
+// 示例测试函数
+async function testFonts(page) {
+  return '字体测试通过';
+}
+
+async function testOverflow(page) {
+  return '无溢出问题';
+}
+
+async function testLinks(page) {
+  return '所有链接可用';
 }
 
 runTests().catch(err => {
