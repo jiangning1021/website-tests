@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   url: 'https://www.gzhaoyin.com',
   fontRules: {
     primaryFont: 'Montserrat, Montserrat_Bold',
