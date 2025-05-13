@@ -13,8 +13,8 @@ jobs:
         node-version: '14'
     - run: npm install puppeteer
     - run: node run-tests.js
-    - name: Upload results
-      uses: actions/upload-artifact@v3
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: test-results.json
