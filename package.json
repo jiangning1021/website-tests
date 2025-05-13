@@ -1,6 +1,7 @@
 {
   "name": "website-test",
   "version": "1.0.0",
+  "type": "module",
   "main": "run-tests.js",
   "scripts": {
     "test": "node run-tests.js"
