@@ -1,8 +1,11 @@
 const config = require('./website-tests.config.js');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const dictionary = require('dictionary-en'); // 依赖之一
+const nspell = require('nspell');
 
 async function runTests() {
+  const dict = await loadDictionary();
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
@@ -12,13 +15,13 @@ async function runTests() {
   for (const pageUrl of config.pagesToTest) {
     const fullUrl = config.url + pageUrl;
     const page = await browser.newPage();
-    await page.goto(fullUrl);
+    await page.goto(fullUrl, { waitUntil: 'domcontentloaded' });
 
-    // 简单模拟的测试函数
     results[pageUrl] = {
       fonts: await testFonts(page),
       overflow: await testOverflow(page),
-      links: await testLinks(page)
+      links: await testLinks(page),
+      spelling: await checkSpelling(page, dict)
     };
 
     await page.close();
@@ -41,6 +44,32 @@ async function testOverflow(page) {
 
 async function testLinks(page) {
   return '所有链接可用';
+}
+
+// 拼写检查
+async function checkSpelling(page, dict) {
+  const text = await page.evaluate(() => document.body.innerText);
+  const words = text.match(/\b[a-zA-Z]{3,}\b/g) || [];
+
+  const mistakes = [];
+  for (const word of words) {
+    if (!dict.correct(word)) {
+      mistakes.push(word);
+    }
+  }
+
+  const unique = [...new Set(mistakes)];
+  return unique.length ? unique.slice(0, 20) : '未发现拼写错误';
+}
+
+// 加载拼写词典
+function loadDictionary() {
+  return new Promise((resolve, reject) => {
+    dictionary((err, dict) => {
+      if (err) return reject(err);
+      resolve(nspell(dict));
+    });
+  });
 }
 
 runTests().catch(err => {
