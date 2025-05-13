@@ -1,5 +1,7 @@
 const config = require('./website-tests.config.js');
-const puppeteer = require('puppeteer');
+const browser = await puppeteer.launch({
+  args: ['--no-sandbox', '--disable-setuid-sandbox']
+});
 const fs = require('fs');
 
 async function runTests() {
