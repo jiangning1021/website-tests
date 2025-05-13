@@ -1,7 +1,8 @@
-const config = require('./website-tests.config.js');
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const nspell = require('nspell');
+import puppeteer from 'puppeteer';
+import fs from 'fs';
+import dictionary from 'dictionary-en';
+import nspell from 'nspell';
+import config from './website-tests.config.js';
 
 (async () => {
   const dictionary = await import('dictionary-en-us').then(mod => mod.default);
