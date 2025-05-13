@@ -11,7 +11,6 @@ async function runTests() {
     const page = await browser.newPage();
     await page.goto(fullUrl);
     
-    // 运行所有测试
     results[pageUrl] = {
       fonts: await testFonts(page),
       overflow: await testOverflow(page),
@@ -22,10 +21,12 @@ async function runTests() {
   }
   
   await browser.close();
-  
-  // 保存结果
+
   fs.writeFileSync('test-results.json', JSON.stringify(results, null, 2));
   console.log('测试完成，结果已保存到 test-results.json');
 }
 
-// 实现各种测试函数...
+runTests().catch(err => {
+  console.error('测试运行出错:', err);
+  process.exit(1);
+});
