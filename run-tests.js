@@ -1,8 +1,15 @@
-import fs from 'fs';
-import puppeteer from 'puppeteer';
-import nspell from 'nspell';
-import dictionary from 'dictionary-en';
 import config from './website-tests.config.js';
+import puppeteer from 'puppeteer';
+import fs from 'fs';
+import dictionary from 'dictionary-en';
+import { promisify } from 'util';
+import nspell from 'nspell';
+
+const loadDictionary = async () => {
+  const getDictionary = promisify(dictionary);
+  const dictData = await getDictionary();
+  return nspell(dictData);
+};
 
 async function runTests() {
   const dict = await loadDictionary();
@@ -58,15 +65,6 @@ async function checkSpelling(page, dict) {
 
   const unique = [...new Set(mistakes)];
   return unique.length ? unique.slice(0, 20) : '未发现拼写错误';
-}
-
-function loadDictionary() {
-  return new Promise((resolve, reject) => {
-    dictionary((err, dict) => {
-      if (err) return reject(err);
-      resolve(nspell(dict));
-    });
-  });
 }
 
 runTests().catch(err => {
