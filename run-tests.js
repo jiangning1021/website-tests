@@ -2,13 +2,16 @@ import config from './website-tests.config.js';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 import dictionary from 'dictionary-en';
-import { promisify } from 'util';
 import nspell from 'nspell';
 
+// 正确的加载拼写词典方式（不能使用 promisify）
 const loadDictionary = async () => {
-  const getDictionary = promisify(dictionary);
-  const dictData = await getDictionary();
-  return nspell(dictData);
+  return new Promise((resolve, reject) => {
+    dictionary((err, dict) => {
+      if (err) return reject(err);
+      resolve(nspell(dict));
+    });
+  });
 };
 
 async function runTests() {
@@ -40,6 +43,7 @@ async function runTests() {
   console.log('✅ 测试完成，结果已保存到 test-results.json');
 }
 
+// 示例测试函数
 async function testFonts(page) {
   return '字体测试通过';
 }
