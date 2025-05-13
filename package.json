@@ -1,15 +1,14 @@
 {
   "name": "website-test",
   "version": "1.0.0",
+  "description": "Automated website UI and spelling tests",
   "type": "module",
   "main": "run-tests.js",
   "scripts": {
     "test": "node run-tests.js"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "dictionary-en": "^4.0.0",
     "nspell": "^2.1.5",
