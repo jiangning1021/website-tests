@@ -10,8 +10,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "dictionary-en": "^2.0.0",
-    "nspell": "^2.0.0",
-    "puppeteer": "^21.0.0"
+    "dictionary-en": "^4.0.0",
+    "nspell": "^2.1.5",
+    "puppeteer": "^24.8.2"
   }
 }
