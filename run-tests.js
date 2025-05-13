@@ -4,11 +4,23 @@ const fs = require('fs');
 const dictionary = require('dictionary-en'); // 依赖之一
 const nspell = require('nspell');
 
-async function runTests() {
-  const dict = await loadDictionary();
-  const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+(async () => {
+  const dictionary = await import('dictionary-en-us').then(mod => mod.default);
+
+  function loadDictionary() {
+    return new Promise((resolve, reject) => {
+      dictionary((err, dict) => {
+        if (err) return reject(err);
+        resolve(nspell(dict));
+      });
+    });
+  }
+
+  async function runTests() {
+    const dict = await loadDictionary();
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
 
   const results = {};
 
