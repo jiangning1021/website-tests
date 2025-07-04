@@ -4,7 +4,6 @@ import fs from 'fs';
 import dictionary from 'dictionary-en';
 import nspell from 'nspell';
 
-// 正确的加载拼写词典方式（不能使用 promisify）
 const loadDictionary = async () => {
   return new Promise((resolve, reject) => {
     dictionary((err, dict) => {
