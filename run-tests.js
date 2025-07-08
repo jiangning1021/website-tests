@@ -1,16 +1,17 @@
 import config from './website-tests.config.js';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
+import dictionary from 'dictionary-en';
 import nspell from 'nspell';
-import { promisify } from 'util';
 
-// 使用 dynamic import 加载 dictionary-en 模块
 const loadDictionary = async () => {
-  const dictionaryModule = await import('dictionary-en'); // dynamic import
-  const dictionaryFn = dictionaryModule.default || dictionaryModule; // 兼容 default 或非 default 导出
-  const getDictionary = promisify(dictionaryFn);
-  const dict = await getDictionary();
-  return nspell(dict);
+  return new Promise((resolve, reject) => {
+    // ✅ 不再用 promisify，直接使用回调
+    (dictionary.default || dictionary)((err, dict) => {
+      if (err) return reject(err);
+      resolve(nspell(dict));
+    });
+  });
 };
 
 async function runTests() {
