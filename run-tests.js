@@ -1,7 +1,8 @@
 import config from './website-tests.config.js';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
-import dictionary from 'dictionary-en';
+import dictionaryModule from 'dictionary-en';
+const dictionary = dictionaryModule.default;
 import nspell from 'nspell';
 
 const loadDictionary = async () => {
